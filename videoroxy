@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VideoSicurezza Shop - Demo Professionale</title>
+<style>
+    body {
+        margin: 0;
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+    }
+
+    /* HEADER */
+    header {
+        background-color: #1f1f1f;
+        color: #fff;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        position: relative;
+    }
+
+    header h1 {
+        margin: 0;
+        font-size: 2em;
+    }
+
+    .cart {
+        position: relative;
+        cursor: pointer;
+        font-size: 1.5em;
+    }
+
+    .cart span {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        background-color: #ff0000;
+        color: white;
+        width: 20px;
+        height: 20px;
+        font-size: 0.8em;
+        text-align: center;
+        border-radius: 50%;
+        line-height: 20px;
+    }
+
+    header p {
+        width: 100%;
+        text-align: center;
+        margin: 5px 0 0;
+        font-size: 1em;
+        color: #ddd;
+    }
+
+    /* NAVBAR */
+    nav {
+        display: flex;
+        justify-content: center;
+        background-color: #333;
+        flex-wrap: wrap;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        padding: 14px 20px;
+        display: block;
+        transition: background 0.3s;
+    }
+
+    nav a:hover {
+        background-color: #555;
+    }
+
+    /* HERO */
+    .hero {
+        background-image: url('https://via.placeholder.com/1200x400?text=Videosorveglianza');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        text-align: center;
+        padding: 60px 20px;
+        position: relative;
+    }
+
+    .hero h2 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+    }
+
+    .hero p {
+        font-size: 1.2em;
+    }
+
+    /* PRODOTTI */
+    .products {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 40px 20px;
+    }
+
+    .product {
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+        position: relative;
+    }
+
+    .product:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .product img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .product h3 {
+        margin: 15px 0 10px;
+        font-size: 1.2em;
+    }
+
+    .product p {
+        font-size: 0.95em;
+        color: #555;
+    }
+
+    .product button {
+        margin-top: 10px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #1f8efa;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .product button:hover {
+        background-color: #0066cc;
+    }
+
+    /* MINI-CARRELLO */
+    .cart-popup {
+        position: absolute;
+        top: 70px;
+        right: 20px;
+        width: 300px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0px 5px 15px rgba(0,0,0,0.3);
+        display: none;
+        flex-direction: column;
+        z-index: 100;
+        max-height: 400px;
+        overflow-y: auto;
+        padding-bottom: 10px;
+    }
+
+    .cart-popup h4 {
+        margin: 10px;
+        font-size: 1em;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 5px;
+    }
+
+    .cart-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+        font-size: 0.9em;
+        align-items: center;
+    }
+
+    .cart-item:last-child {
+        border-bottom: none;
+    }
+
+    .cart-item span {
+        margin-left: 5px;
+    }
+
+    .checkout-btn {
+        margin: 10px;
+        padding: 10px;
+        background-color: #1f8efa;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: calc(100% - 20px);
+    }
+
+    .checkout-btn:hover {
+        background-color: #0066cc;
+    }
+
+    /* FOOTER */
+    footer {
+        background-color: #1f1f1f;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        margin-top: 40px;
+    }
+
+    /* RESPONSIVE */
+    @media(max-width: 600px){
+        .hero h2 {
+            font-size: 1.8em;
+        }
+        .hero p {
+            font-size: 1em;
+        }
+        .cart-popup {
+            right: 10px;
+            width: 90%;
+        }
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <h1>VideoSicurezza Shop</h1>
+    <div class="cart" onclick="toggleCart()">🛒<span>0</span></div>
+    <p>Il tuo negozio online di videosorveglianza</p>
+
+    <div class="cart-popup" id="cartPopup">
+        <h4>Carrello</h4>
+        <div id="cartItems">
+            <p style="padding:10px; color:#555;">Nessun prodotto nel carrello</p>
+        </div>
+        <div id="cartTotal" style="padding:10px; font-weight:bold;"></div>
+        <button class="checkout-btn" onclick="checkout()">Checkout</button>
+    </div>
+</header>
+
+<nav>
+    <a href="#">Home</a>
+    <a href="#">Prodotti</a>
+    <a href="#">Offerte</a>
+    <a href="#">Contatti</a>
+</nav>
+
+<section class="hero">
+    <h2>Proteggi la tua casa con i migliori sistemi di videosorveglianza</h2>
+    <p>Telecamere HD, sistemi wireless e accessori di sicurezza a portata di clic.</p>
+</section>
+
+<section class="products">
+    <div class="product" data-price="89.99">
+        <img src="https://via.placeholder.com/250x200?text=Telecamera+HD" alt="Telecamera HD">
+        <h3>Telecamera HD 1080p</h3>
+        <p>Alta definizione, visione notturna e facile da installare.</p>
+        <button onclick="addToCart('Telecamera HD 1080p', 89.99)">Aggiungi al carrello</button>
+    </div>
+    <div class="product" data-price="249.99">
+        <img src="https://via.placeholder.com/250x200?text=Kit+Wireless" alt="Kit Wireless">
+        <h3>Kit Videosorveglianza Wireless</h3>
+        <p>Completo di 4 telecamere e registratore, senza fili e con app mobile.</p>
+        <button onclick="addToCart('Kit Videosorveglianza Wireless', 249.99)">Aggiungi al carrello</button>
+    </div>
+    <div class="product" data-price="149.99">
+        <img src="https://via.placeholder.com/250x200?text=Telecamera+360" alt="Telecamera 360">
+        <h3>Telecamera 360°</h3>
+        <p>Copertura completa della stanza con rotazione automatica.</p>
+        <button onclick="addToCart('Telecamera 360°', 149.99)">Aggiungi al carrello</button>
+    </div>
+    <div class="product" data-price="39.99">
+        <img src="https://via.placeholder.com/250x200?text=Accessori" alt="Accessori">
+        <h3>Accessori Videosorveglianza</h3>
+        <p>Cavi, supporti e alimentatori per completare il tuo sistema di sicurezza.</p>
+        <button onclick="addToCart('Accessori Videosorveglianza', 39.99)">Aggiungi al carrello</button>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2025 VideoSicurezza Shop - Tutti i diritti riservati</p>
+</footer>
+
+<script>
+    let cartCount = 0;
+    let cartTotal = 0;
+    const cartBadge = document.querySelector('.cart span');
+    const cartPopup = document.getElementById('cartPopup');
+    const cartItemsContainer = document.getElementById('cartItems');
+    const cartTotalDisplay = document.getElementById('cartTotal');
+    let cartItems = {};
+
+    function addToCart(productName, price) {
+        cartCount++;
+        cartBadge.textContent = cartCount;
+
+        if(cartItemsContainer.children[0].tagName === 'P'){
+            cartItemsContainer.innerHTML = '';
+        }
+
+        if(cartItems[productName]){
+            cartItems[productName].qty++;
+            cartItems[productName].total = (cartItems[productName].qty * price).toFixed(2);
+            const itemDiv = document.getElementById(productName);
+            itemDiv.querySelector('.qty').textContent = cartItems[productName].qty;
+            itemDiv.querySelector('.item-total').textContent = cartItems[productName].total + '€';
+        } else {
+            cartItems[productName] = { qty: 1, price: price, total: price.toFixed(2) };
+            const div = document.createElement('div');
+            div.className = 'cart-item';
+            div.id = productName;
+            div.innerHTML = `${productName} <span class="qty">1</span>x <span class="item-total">${price.toFixed(2)}€</span>`;
+            cartItemsContainer.appendChild(div);
+        }
+
+        updateTotal();
+        cartPopup.style.display = 'flex';
+    }
+
+    function updateTotal() {
+        cartTotal = 0;
+        for(let item in cartItems){
+            cartTotal += parseFloat(cartItems[item].total);
+        }
+        cartTotalDisplay.textContent = `Totale: ${cartTotal.toFixed(2)}€`;
+    }
+
+    function toggleCart() {
+        cartPopup.style.display = cartPopup.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    function checkout() {
+        alert(`Totale ordine: ${cartTotal.toFixed(2)}€\nFunzione checkout simulata.`);
+    }
+
+    document.addEventListener('click', function(event){
+        if(!cartPopup.contains(event.target) && !document.querySelector('.cart').contains(event.target)){
+            cartPopup.style.display = 'none';
+        }
+    });
+</script>
+
+</body>
+</html>
